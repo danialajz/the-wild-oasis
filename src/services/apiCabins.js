@@ -10,7 +10,7 @@ async function getCabins() {
 }
 export default getCabins;
 
-export async function deletecabins() {
+export async function deletecabins(id) {
   const { data, error } = await supabase.from("cabins").delete().eq("id", id);
   if (error) {
     console.log(error);
