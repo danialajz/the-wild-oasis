@@ -56,7 +56,7 @@ function CabinRow({ cabin }) {
 
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: deletecabins,
     onSuccess: () => {
       toast.success("cabin successfully deleted");
@@ -73,7 +73,7 @@ function CabinRow({ cabin }) {
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
       <Discount>{formatCurrency(discount)}</Discount>
-      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+      <button onClick={() => mutate(cabinId)} disabled={isLoading}>
         Delete
       </button>
     </TableRow>
