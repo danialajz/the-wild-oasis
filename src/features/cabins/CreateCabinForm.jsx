@@ -66,11 +66,11 @@ function CreateCabinForm() {
   });
 
   function onSubmit(data) {
-    console.log(data);
+  
     mutate(data);
   }
   function onError(errors) {
-    console.log(errors);
+
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
