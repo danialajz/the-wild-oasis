@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { CiHome } from "react-icons/ci";
 import {
   HiOutlineCalendarDays,
   HiOutlineCog6Tooth,
@@ -28,7 +29,6 @@ const StyledNavLink = styled(NavLink)`
     transition: all 0.3s;
   }
 
-  /* This works because react-router places the active class on the active NavLink */
   &:hover,
   &:active,
   &.active:link,
