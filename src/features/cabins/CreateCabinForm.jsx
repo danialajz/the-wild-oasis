@@ -4,25 +4,20 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { createEditCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 import { UseCreateCabin } from "./UseCreateCabin";
 import { useEditCabin } from "./UseEditeCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
+  const { isCreating, createCabin } = UseCreateCabin();
+  const { editCabin, isEditing } = useEditCabin();
+  const isWorking = isCreating || isEditing;
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSessions = Boolean(editId);
   const { register, handleSubmit, reset, getValues, formState } = useForm({
     defaultValues: isEditSessions ? editValues : {},
   });
   const { errors } = formState;
-
-  const { isCreating, createCabin } = UseCreateCabin();
-  const { editCabin, isEditing } = useEditCabin();
-
-  const isWorking = isCreating || isEditing;
 
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
