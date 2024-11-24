@@ -1,4 +1,13 @@
 import styled from "styled-components";
+import React, {
+  cloneElement,
+  createContext,
+  useContext,
+  useState,
+} from "react";
+import { HiXMark } from "react-icons/hi2";
+import { createPortal } from "react-dom";
+import { useOutSideClick } from "../hooks/UseOutSideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -48,18 +57,6 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
-
-import React, {
-  cloneElement,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { HiXMark } from "react-icons/hi2";
-import { createPortal } from "react-dom";
-import { useOutSideClick } from "../hooks/UseOutSideClick";
 
 const ModalContext = createContext();
 function Modal({ children }) {
