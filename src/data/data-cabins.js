@@ -1,4 +1,6 @@
-const { supabaseUrl } = require("services/supabase");
+// const { supabaseUrl } = require("services/supabase");
+const supabaseUrl =
+  "https://wlklorwixidouvltfnvo.supabase.co/services/supabase";
 const imageUrl = `${supabaseUrl}/storage/v1/object/public/cabin-images/`;
 
 // Book now and experience luxury in nature.
