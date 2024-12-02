@@ -13,7 +13,8 @@ import Spinner from "../../ui/Spinner";
 import { useEffect, useState } from "react";
 import Checkbox from "../../ui/Checkbox";
 import { formatCurrency } from "../../utils/helpers";
-import { useChecking } from "./useCheckIn";
+import { useCheckin } from "./useCheckIn";
+import { useSettings } from "../settings/UseSettings";
 
 const Box = styled.div`
   /* Box */
@@ -26,10 +27,12 @@ const Box = styled.div`
 function CheckinBooking() {
   const moveBack = useMoveBack();
   const [confirmPaid, setConfirmPaid] = useState(false);
+  const [addBreakeFast, setAddBreakeFast] = useState(false);
   const { booking = {}, isLoading } = useBooking();
+  const { settings, isLoading: isLoadingSettings } = useSettings();
 
   useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking.isPaid]);
-  const { checkin, isChekingIn } = useChecking();
+  const { checkin, isChekingIn } = useCheckin();
   const {
     id: bookingId,
     guests,
@@ -41,10 +44,23 @@ function CheckinBooking() {
 
   function handleCheckin() {
     if (!confirmPaid) return;
-    checkin(bookingId);
+    if (addBreakeFast) {
+      checkin({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          extrasPrice: optionalBreakeFastPrice,
+          totalPrice: totalPrice + optionalBreakeFastPrice,
+        },
+      });
+    } else {
+      checkin({ bookingId, breakfast: {} });
+    }
   }
+  const optionalBreakeFastPrice =
+    settings?.breakFastPrice * numNights * numGuests;
 
-  if (isLoading) return <Spinner></Spinner>;
+  if (isLoading || isLoadingSettings) return <Spinner></Spinner>;
   return (
     <>
       <Row type="horizontal">
@@ -53,6 +69,21 @@ function CheckinBooking() {
       </Row>
 
       <BookingDataBox booking={booking} />
+      {!hasBreakfast && (
+        <Box>
+          <Checkbox
+            checked={addBreakeFast}
+            onChange={() => {
+              setAddBreakeFast((add) => !add);
+              setConfirmPaid(false);
+            }}
+            id="breakfast"
+          >
+            Want to add breakFast to for{" "}
+            {formatCurrency(optionalBreakeFastPrice)}?
+          </Checkbox>
+        </Box>
+      )}
       <Box>
         <Checkbox
           checked={confirmPaid}
@@ -61,11 +92,17 @@ function CheckinBooking() {
           id="confirm"
         >
           I Confirm that {guests.fullName}has paid the total amount of{" "}
-          {formatCurrency(totalPrice)}
+          {!addBreakeFast
+            ? formatCurrency(totalPrice)
+            : `${formatCurrency(
+                totalPrice + optionalBreakeFastPrice
+              )} (${formatCurrency(totalPrice)} + ${formatCurrency(
+                optionalBreakeFastPrice
+              )})`}
         </Checkbox>
       </Box>
       <ButtonGroup>
-        <Button onClick={handleCheckin} disabled={!confirmPaid || isChekingIn }>
+        <Button onClick={handleCheckin} disabled={!confirmPaid || isChekingIn}>
           Check in booking #{bookingId}
         </Button>
         <Button variation="secondary" onClick={moveBack}>
