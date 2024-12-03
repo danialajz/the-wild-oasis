@@ -14,7 +14,7 @@ export function useLogin() {
       const name = user.user.email.replace(/@.*/, "");
 
       toast.success(`Welcome ${name}`);
-      queryClient.setQueriesData(["user"], user);
+      queryClient.setQueryData(["user"], user.user);
       navigate("/dashboard", { replace: true });
     },
     onError: (err) => {
