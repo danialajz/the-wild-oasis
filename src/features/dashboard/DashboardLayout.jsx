@@ -8,8 +8,16 @@ const StyledDashboardLayout = styled.div`
 `;
 
 import React from "react";
+import { useRecentBooking } from "./useRecentBooking";
+import Spinner from "../../ui/Spinner";
+import { useStayBooking } from "./useRecentStya";
 
 function DashboardLayout() {
+  const { bookings, isLoading } = useRecentBooking();
+  const { isLoading: isLoading2, stays, confrimedStays } = useStayBooking();
+  console.log(bookings);
+
+  if (isLoading || isLoading2) return <Spinner />;
   return (
     <StyledDashboardLayout>
       <div>statistics</div>
