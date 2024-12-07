@@ -10,17 +10,31 @@ const StyledDashboardLayout = styled.div`
 import React from "react";
 import { useRecentBooking } from "./useRecentBooking";
 import Spinner from "../../ui/Spinner";
-import { useStayBooking } from "./useRecentStya";
+import { useStayBooking } from "./useRecentStyas";
+import Stats from "./Stats";
+import { useCabins } from "../cabins/UseCabins";
 
 function DashboardLayout() {
   const { bookings, isLoading } = useRecentBooking();
-  const { isLoading: isLoading2, stays, confrimedStays } = useStayBooking();
+  const {
+    isLoading: isLoading2,
+    stays,
+    confrimedStays,
+    numDays,
+  } = useStayBooking();
+  const { cabins, isLoading: isLoading3 } = useCabins();
   console.log(bookings);
 
   if (isLoading || isLoading2) return <Spinner />;
   return (
     <StyledDashboardLayout>
-      <div>statistics</div>
+      <Stats
+        bookings={bookings}
+        confrirmedStays={confrimedStays}
+        numDays={numDays}
+        cabinCount={cabins.length}
+      />
+
       <div>Today s activity</div>
       <div>chart stay duration</div>
       <div>chart sales</div>

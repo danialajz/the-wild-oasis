@@ -19,5 +19,5 @@ export function useStayBooking() {
     (stay) => stay.status === "checked-in" || stay.status === "checked-out"
   );
 
-  return { isLoading, stays, confrimedStays };
+  return { isLoading, stays, confrimedStays, numDays };
 }
