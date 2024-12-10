@@ -65,12 +65,12 @@ import {
 
 function SalesChart({ bookings, numDays }) {
   const { isDarkMode } = useDarkMode();
-  const allDate = eachDayOfInterval({
+  const allDates = eachDayOfInterval({
     start: subDays(new Date(), numDays - 1),
     end: new Date(),
   });
 
-  const data = allDate.map((date) => {
+  const data = allDates.map((date) => {
     return {
       label: format(date, "MMM dd"),
       totalSales: bookings
@@ -96,7 +96,10 @@ function SalesChart({ bookings, numDays }) {
       };
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales</Heading>
+      <Heading as="h2">
+        Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash;{" "}
+        {format(allDates.at(-1), "MMM dd yyyy")}
+      </Heading>
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
